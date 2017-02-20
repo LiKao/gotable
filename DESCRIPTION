@@ -1,0 +1,9 @@
+Package: gotable
+Title: Easy formating of tables
+Version: 0.0.0
+Authors@R: person("Tillmann", "Nett", email = "mail@tcrueger.de", role = c("aut", "cre"))
+Description: Easy formating of tables using a simple table grammar
+Depends: R (>= 3.2.2)
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
