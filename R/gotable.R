@@ -185,6 +185,7 @@ print.gotable.tabledata <- function(x,...) {
   self
 }
 
+#' @export
 gotable <- function(data) {
   .gotable( columns   = list(), 
             variables = list(),
@@ -197,6 +198,7 @@ gotable.clone <- function(table) {
             rows      = table$rows )
 }
 
+#' @export
 as.character.gotable <- function(x, format, ...) {
   if(missing(format) || is.null(format)) {
     format = getOption("knitr.table.format")
@@ -233,6 +235,7 @@ as.character.gotable <- function(x, format, ...) {
   nrv 
 }
 
+#' @export
 print.gotable <- function(x, format, ...) {
   if(missing(format) || is.null(format)) {
     format = getOption("knitr.table.format")
@@ -247,6 +250,7 @@ addtable <- function(def, table) {
   UseMethod("addtable")
 }
 
+#' @export
 "+.gotable" <- function(e1, e2) {
   # We just reverse here, to get the correct callback on the second part
   addtable(e2, e1)

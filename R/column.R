@@ -1,3 +1,4 @@
+#' @export
 column <- function(datacolumn, name, align="r" ){
   if(missing(name)) {
     name <- datacolumn

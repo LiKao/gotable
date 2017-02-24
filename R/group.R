@@ -1,3 +1,4 @@
+#' @export
 group <- function(varname, values) {
   nrv <- list(varname=varname, values=values)
   class(nrv) <- "gotable.group"
