@@ -35,5 +35,6 @@ print.gotable.rowset <- function(x,...) {
 #' @export
 addtable.gotable.group <- function(def, table) {
   nrv <- gotable.clone( table )
+  nrv$split( def )
   nrv
 }
