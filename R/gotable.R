@@ -209,7 +209,11 @@ as.character.gotable <- function(x, format, ...) {
   nrv <- ""
   
   content <- x$format()
-  sp <- lapply(FUN=span, content) %>% unlist() %>% max()
+  if(!is.null(content)) {
+    sp <- lapply(FUN=span, content) %>% unlist() %>% max()
+  } else {
+    sp <- 0
+  }
   
   if(format == "latex") {
     ## Start environment
