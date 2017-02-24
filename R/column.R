@@ -19,7 +19,7 @@ variable <- function( column ) {
   }
   
   self$format <- function(data,i) {
-    nrv <- lapply(FUN=as.character, self$get(data,i) )
+    nrv <- lapply(FUN=format, self$get(data,i) )
     if(length(nrv) > 0) {
       nrv %>% unlist() %>% as.matrix()
     } else {
