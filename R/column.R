@@ -13,6 +13,10 @@ column <- function(src, title, width=6, align="r", formatter=identity){
   self$formatter <- formatter
   class(self) <- "gotable.column"
 
+  self$gettitle <- function() {
+    format(self$title, width=self$width, justify="centre")
+  }
+  
   self$get <- function(data,i) {
     data[ i, self$src ]
   }

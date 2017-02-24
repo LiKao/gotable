@@ -176,7 +176,7 @@ print.gotable.tabledata <- function(x,...) {
   }
   
   self$header <- function() {
-    names <- self$columns %>% getl( "title" )
+    lapply(FUN=function(c) c$gettitle(), self$columns)
   }
   
   self$addcolumn <- function(column) {
