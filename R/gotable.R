@@ -172,11 +172,11 @@ print.gotable.tabledata <- function(x,...) {
   self$rows      <- rows
   
   self$structure <- function() {
-    self$columns %>% getl( "align" )
+    lapply(FUN=function(c) rep(c$align, c$span), self$columns)
   }
   
   self$header <- function() {
-    lapply(FUN=function(c) c$gettitle(), self$columns)
+    lapply(FUN=function(c) list(c$gettitle(),c$span), self$columns)
   }
   
   self$addcolumn <- function(column) {
@@ -208,6 +208,10 @@ gotable.clone <- function(table) {
             rows      = table$rows )
 }
 
+format.latexheader <- function(hdr) {
+  lapply( FUN=function(h) "\\multicolumn{" %:% h[2] %:% "}{c}{" %:% h[1] %:% "}", hdr )
+}
+
 #' @export
 as.character.gotable <- function(x, format, ...) {
   if(missing(format) || is.null(format)) {
@@ -236,7 +240,7 @@ as.character.gotable <- function(x, format, ...) {
     if( sp > 0) {
       nrv <- nrv %:% paste( rep(delim, sp), collapse="")
     }
-    nrv       <- nrv %:% paste( x$header(), collapse=" & ") %:% "\\\\\n"
+    nrv       <- nrv %:% paste( format.latexheader( x$header()), collapse=" & ") %:% "\\\\\n"
     nrv       <- nrv %:% "\\midrule\n"
   }
 
