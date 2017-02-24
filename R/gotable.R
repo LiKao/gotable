@@ -262,6 +262,11 @@ print.gotable <- function(x, format, ...) {
   cat( as.character(x, format, ...) )
 }
 
+#' @export
+knit_print.gotable <- function(x, ...) {
+  knitr::asis_output(as.character(x, format="latex" ) )
+}
+
 addtable <- function(def, table) {
   UseMethod("addtable")
 }
