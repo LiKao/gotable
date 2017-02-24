@@ -25,12 +25,14 @@ rowset <- function(subrows) {
   self
 }
 
+#' @export
 print.gotable.rowset <- function(x,...) {
   for(s in x$subrows) {
     print( s )
   }
 }
 
+#' @export
 addtable.gotable.group <- function(def, table) {
   nrv <- gotable.clone( table )
   nrv

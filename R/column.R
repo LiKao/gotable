@@ -31,6 +31,7 @@ variable <- function( column ) {
   self
 }
 
+#' @export
 addtable.gotable.column <- function(def, table) {
   nrv <- gotable.clone( table )
   nrv$addcolumn( def )

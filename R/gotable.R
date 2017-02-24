@@ -3,6 +3,7 @@
   UseMethod(".nrow")
 }
 
+#' @export
 .nrow.data.frame <- function(d) {
   nrow(d)
 }
@@ -17,6 +18,7 @@ subtable.row <- function(v) {
   nrv
 }
 
+#' @export
 span.gotable.subtable.row <- function(r) {
   0
 }
@@ -34,6 +36,7 @@ padding <- function(depth, format) {
   }
 }
 
+#' @export
 as.character.gotable.subtable.row <- function(x, depth=0, format, ...) {
   if(format=="latex") {
     newl  <- " \\\\\n"
@@ -45,6 +48,7 @@ as.character.gotable.subtable.row <- function(x, depth=0, format, ...) {
   padding(depth, format) %:% paste(x$values, collapse=delim) %:% newl
 }
 
+#' @export
 print.gotable.subtable.row <- function(x, depth=0, ...) {
   cat( as.character(x, depth=depth ), ... )
 }
@@ -55,6 +59,8 @@ subtable <- function(v, level) {
   nrv
 }
 
+
+#' @export
 span.gotable.subtable <- function(r) {
   if(is.null(r$subrows)) {
     0
@@ -63,6 +69,8 @@ span.gotable.subtable <- function(r) {
   }
 }
 
+
+#' @export
 as.character.gotable.subtable <- function(x, depth=0, format, ...) {
   if(missing(format) || is.null(format)) {
     format = getOption("knitr.table.format")
@@ -98,6 +106,7 @@ as.character.gotable.subtable <- function(x, depth=0, format, ...) {
   nrv
 }
 
+#' @export
 print.gotable.subtable <- function(x, depth=0, format, ... ) {
   if(missing(format) || is.null(format)) {
     format = getOption("knitr.table.format")
@@ -140,14 +149,17 @@ tabledata <- function(data, slice) {
   self
 }
 
+#' @export
 .nrow.gotable.tabledata <- function(d) {
   length(f$slice)
 }
 
+#' @export
 print.gotable.tabledata <- function(x,...) {
   print( x[,] )
 }
 
+#' @export
 `[.gotable.tabledata` <- function(x, i, j) {
   x$data[ x$slice[i], j]
 }
