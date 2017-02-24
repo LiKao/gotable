@@ -23,11 +23,11 @@ span.gotable.subtable.row <- function(r) {
   0
 }
 
-padding <- function(depth, format) {
+padding <- function(depth, format, width=7) {
   if(format=="latex") {
-    delim <- " & "
+    delim <- format(" & ", width=width, justify="right")
   } else {
-    delim <- "\t\t\t"
+    delim <- paste(rep(" ", width), collapse="")
   }
   if(depth>0) {
     delim %:% padding(depth-1, format)
@@ -43,7 +43,7 @@ as.character.gotable.subtable.row <- function(x, depth=0, format, ...) {
     delim <- " & "
   } else {
     newl  <- "\n"
-    delim <- "\t\t\t"
+    delim <- ""
   }
   padding(depth, format) %:% paste(x$values, collapse=delim) %:% newl
 }
@@ -87,7 +87,7 @@ as.character.gotable.subtable <- function(x, depth=0, format, ...) {
     delim <- " & "
   } else {
     newl  <- "\n"
-    delim <- "\t"
+    delim <- ""
   }
   
   nrv       <- padding(depth, format=format)
@@ -96,12 +96,12 @@ as.character.gotable.subtable <- function(x, depth=0, format, ...) {
     if(format == "latex" && sp > 1 ) {
       nrv <- nrv %:% "\\multicolumn{" %:% sp %:% "}{l}{" %:% x$level %:% "}" %:% newl
     } else {
-      nrv  <- nrv %:% x$level %:% newl
+      nrv  <- nrv %:% format(x$level, width=7, justify="left") %:% newl
     }
     rows <- lapply( FUN=function(s) as.character(s, depth=depth+1, format=format, ...), x$subrows)
     nrv  <- nrv %:% paste(rows, collapse="")
   } else {
-    nrv <- nrv %:% x$level %:% delim %:% as.character(x$subrows[[ 1 ]], format=format, ... )
+    nrv <- nrv %:% format(x$level, width=7-3, justify="left") %:% delim %:% as.character(x$subrows[[ 1 ]], format=format, ... )
   }
   nrv
 }
@@ -169,7 +169,6 @@ print.gotable.tabledata <- function(x,...) {
   self           <- new.env()
   
   self$columns   <- columns
-  self$variables <- variables
   self$rows      <- rows
   
   self$structure <- function() {
@@ -177,16 +176,15 @@ print.gotable.tabledata <- function(x,...) {
   }
   
   self$header <- function() {
-    self$columns %>% getl( "name" )
+    names <- self$columns %>% getl( "title" )
   }
   
   self$addcolumn <- function(column) {
     self$columns[[length(self$columns) + 1]]  <- column
-    self$variables[[ column$src ]]         <- variable( column )
   }
   
   self$format <- function() {
-    self$rows$format(self$variables)
+    self$rows$format(self$columns)
   }
   
   self$split <- function(group) {
@@ -228,13 +226,15 @@ as.character.gotable <- function(x, format, ...) {
   }
   
   if(format == "latex") {
+    delim <- format(" & ", width=7, justify="right" )
+    
     ## Start environment
     nrv       <- "\\begin{tabular}{" %:% paste(rep("l",sp),collapse="")  %:% paste(x$structure(), collapse="" ) %:% "}\n"
     
     ## Header structure
     nrv       <- nrv %:% "\\toprule\n"
     if( sp > 0) {
-      nrv <- nrv %:% paste( rep("", sp), collapse=" & " ) %:% " & "
+      nrv <- nrv %:% paste( rep(delim, sp), collapse="")
     }
     nrv       <- nrv %:% paste( x$header(), collapse=" & ") %:% "\\\\\n"
     nrv       <- nrv %:% "\\midrule\n"

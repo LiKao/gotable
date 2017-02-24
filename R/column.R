@@ -1,25 +1,23 @@
 #' @export
-column <- function(datacolumn, name, align="r" ){
-  if(missing(name)) {
-    name <- datacolumn
+column <- function(src, title, width=6, align="r" ){
+  if(missing(title)) {
+    title <- src
   }
   
-  nrv <- list(  src       = datacolumn, 
-                name      = name, 
-                width     = 1, 
-                align     = align )
-  class(nrv) <- "gotable.column"
-  nrv
-}
+  self <- new.env()
+  
+  self$src   <- src
+  self$title <- title
+  self$width <- width
+  self$align <- align
+  class(self) <- "gotable.column"
 
-variable <- function( column ) {
-  self     <- list( column = column$src )
   self$get <- function(data,i) {
-    data[ i, self$column ]
+    data[ i, self$src ]
   }
   
   self$format <- function(data,i) {
-    nrv <- lapply(FUN=format, self$get(data,i) )
+    nrv <- lapply(FUN=function(d) format(d, width=self$width), self$get(data,i) )
     if(length(nrv) > 0) {
       nrv %>% unlist() %>% as.matrix()
     } else {
@@ -27,7 +25,6 @@ variable <- function( column ) {
     }
   }
   
-  class(self) <- "gotable.variable"
   self
 }
 
