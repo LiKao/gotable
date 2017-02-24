@@ -1,5 +1,5 @@
 #' @export
-column <- function(src, title, width=6, align="r" ){
+column <- function(src, title, width=6, align="r", formatter=identity){
   if(missing(title)) {
     title <- src
   }
@@ -10,6 +10,7 @@ column <- function(src, title, width=6, align="r" ){
   self$title <- title
   self$width <- width
   self$align <- align
+  self$formatter <- formatter
   class(self) <- "gotable.column"
 
   self$get <- function(data,i) {
@@ -17,7 +18,7 @@ column <- function(src, title, width=6, align="r" ){
   }
   
   self$format <- function(data,i) {
-    nrv <- lapply(FUN=function(d) format(d, width=self$width), self$get(data,i) )
+    nrv <- lapply(FUN=function(d) format(formatter(d), width=self$width), self$get(data,i) )
     if(length(nrv) > 0) {
       nrv %>% unlist() %>% as.matrix()
     } else {
